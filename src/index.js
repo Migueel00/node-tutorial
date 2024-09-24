@@ -5,11 +5,15 @@ const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const mongodbRoute  = process.env.MONGO_DB_STRING;
 
+// router
+const workoutRouter = require('./routes/workoutRoutes');
+
 const app   = express();
 const PORT  = process.env.PORT || 3000;
 
 // Use bodyparser
 app.use(bodyParser.json());
+app.use("/api/workouts", workoutRouter);
 
 async function start(){
     try{
