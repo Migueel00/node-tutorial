@@ -127,9 +127,49 @@ const updateOneWorkout = async (req, res) => {
     }
 }
 
+const deleteOneWorkout = async (req, res) => {
+
+    const { params: { workoutId }} = req;
+
+    if(!workoutId){
+
+        return res.status(400).send({
+            status: "FAILED",
+            data: { error: "Parameter 'workoutId' can not be empty "}
+        });
+    }
+
+    try {
+        const deletedWorkout = await workoutService.deleteOneWorkout(workoutId);
+
+        if(!deleteOneWorkout){
+
+            return res.status(400).send({
+                status: "FAILED",
+                data: { error: `Can't find workout with the id ${workoutId}`}
+
+            })
+        }
+
+        res.status(200).send({
+            status: "OK",
+            data: deletedWorkout
+        })
+    }
+    catch (error){
+
+        res.status(error?.status || 500).send({
+            status: "FAILED",
+            message: "Error al realizar la petición: ",
+            data: { error: error?.message || error}
+        })
+    }
+}
+
 module.exports = {
     getAllWorkouts,
     getOneWorkout,
     createNewWorkout,
-    updateOneWorkout
+    updateOneWorkout,
+    deleteOneWorkout
 }
