@@ -58,19 +58,7 @@ const getOneWorkout = async (req, res) => {
 const createNewWorkout = async(req, res) => {
     
     const { body } = req;
-
-    if(!body.name || !body.mode || !body.equipment){
-
-        res.status(400).send({
-            status: "FAILED",
-            data: { 
-                error: "One of the following keys is missing or is empty in request body"
-            }
-        });
-
-        return;
-    }
-
+    
     const newWorkout = {
 
         name:       body.name,
