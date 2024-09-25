@@ -36,8 +36,21 @@ const createNewWorkout = async(newWorkout) => {
     }
 }
 
+const updateOneWorkout = async(workoutId, changes) => {
+
+    try {
+        let updateWorkout   = await Workout.findByIdAndUpdate(workoutId, {$set:changes}, {new: true});
+        return updateWorkout;
+    }
+    catch (error){
+
+        throw error;
+    }
+}
+
 module.exports = {
     getAllWorkouts,
     getOneWorkout,
-    createNewWorkout
+    createNewWorkout,
+    updateOneWorkout
 }
