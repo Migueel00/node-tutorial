@@ -43,7 +43,7 @@ const getOneWorkout = async (req, res) => {
         }
 
         res.send({ status: "OK" , data: workout});
-        
+
     }
     catch (error){
 
@@ -55,7 +55,46 @@ const getOneWorkout = async (req, res) => {
 
 }
 
+const createNewWorkout = async(req, res) => {
+    
+    const { body } = req;
+
+    if(!body.name || !body.mode || !body.equipment){
+
+        res.status(400).send({
+            status: "FAILED",
+            data: { 
+                error: "One of the following keys is missing or is empty in request body"
+            }
+        });
+
+        return;
+    }
+
+    const newWorkout = {
+
+        name:       body.name,
+        mode:       body.mode,
+        equipment:  body.equipment
+    };
+
+    try {
+
+        const createdWorkout = await workoutService.createNewWorkout(newWorkout);
+        res.status(201).send({ status: "OK" , data: createdWorkout });
+
+    } catch (error){
+
+        res.status(error?.status || 500).send({
+            status: "FAILED",
+            message: "Error al realizar la petición: ",
+            data: { error: error?.message || error }
+        });
+    }
+}
+
 module.exports = {
     getAllWorkouts,
-    getOneWorkout
+    getOneWorkout,
+    createNewWorkout
 }
